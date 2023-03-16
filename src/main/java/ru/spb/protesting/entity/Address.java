@@ -2,19 +2,18 @@ package ru.spb.protesting.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name = "address")
-@Data
-@NoArgsConstructor
+@Entity @Table(name = "address")
+@Getter @Setter @NoArgsConstructor
 public class Address {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String country;
 
@@ -26,10 +25,5 @@ public class Address {
     @Column(name = "line_two")
     private String lineTwo;
 
-    private long index;
-
-    @OneToOne(mappedBy="address")
-    @PrimaryKeyJoinColumn
-    @JsonBackReference
-    private Customer customer;
+    private Long index;
 }

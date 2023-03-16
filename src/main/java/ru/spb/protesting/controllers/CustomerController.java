@@ -1,15 +1,15 @@
 package ru.spb.protesting.controllers;
 
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.spb.protesting.entity.Customer;
 import ru.spb.protesting.services.CustomerServiceImpl;
 
-import javax.management.InstanceAlreadyExistsException;
+import java.util.Hashtable;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/customers")
 public class CustomerController {
 
@@ -19,34 +19,28 @@ public class CustomerController {
         this.customerService = service;
     }
 
-    @ResponseBody //не проставил ее и была ошибка с отстутсвием темплейта
     @GetMapping("/{id}")
-    public Customer personJson(@PathVariable("id") long id) {
+    public Customer getOneById(@PathVariable("id") Long id) {
         return customerService.findById(id);
     }
 
-    @ResponseBody
     @GetMapping
-    public List<Customer> allPeopleJson() {
+    public List<Customer> getAll() {
         return customerService.finaAll();
     }
 
     //TODO надо понять как тут задать Content-Type application/json, потому что без этого хэдера не сохраняет,
     // Аленка говорит что они руками настройку выбирают и им пофуй
 
-    @ResponseBody
-    @PostMapping(value = "/new",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public long newPersonJson(@RequestBody Customer customer) throws InstanceAlreadyExistsException {
-        return customerService.save(customer);
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Long> newCustomer(@RequestBody Customer customer) {
+        return ResponseEntity.ok(customerService.save(customer));
     }
 
     //TODO не смог приделать ResponseEntity, почему-то ничего не выдает если его использовать
 
-    @ResponseBody
     @PutMapping("/{id}")
-    public String editJson(@PathVariable("id") long id, @RequestBody Customer customer) {
+    public String editCustomer(@PathVariable("id") Long id, @RequestBody Customer customer) {
         if (customerService.findById(id) == null) {
             return "Customer with this id does not exist";
         }
@@ -55,9 +49,11 @@ public class CustomerController {
         return String.valueOf(savedId);
     }
 
-    //TODO кидает 500ю ошибку, но при этом удаляет. Чо за гуано?
+    //TODO не удаляет, кидает 404. Чо за гуано?
+
     @DeleteMapping("/{id}")
-    public void jsonDelete(@PathVariable("id") long id) {
+    public void deleteCustomer(@PathVariable("id") Long id) {
         customerService.delete(id);
     }
+
 }
