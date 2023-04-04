@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.spb.protesting.entity.Customer;
 import ru.spb.protesting.services.CustomerServiceImpl;
 
-import java.util.Hashtable;
 import java.util.List;
 
 @RestController
@@ -42,8 +41,6 @@ public class CustomerController {
     public ResponseEntity<Long> newCustomer(@RequestBody Customer customer) {
         return ResponseEntity.ok(customerService.save(customer));
     }
-
-    //TODO не смог приделать ResponseEntity, почему-то ничего не выдает если его использовать
 
     @PutMapping("/{id}")
     @Operation(summary = "Edit customer by id")

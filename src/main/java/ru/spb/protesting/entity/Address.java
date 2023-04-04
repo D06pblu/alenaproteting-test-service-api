@@ -32,6 +32,7 @@ public class Address {
     @Schema(description = "Address line two")
     private String lineTwo;
 
+    @Column(name = "`index`")
     @Schema(description = "Index")
     private Long index;
 }

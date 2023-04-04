@@ -29,7 +29,7 @@ public class Customer {
     @Schema(description = "Customer email")
     private String email;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
 /** дурацкая аннотация, если двусторонняя, то она соединяет только одинаковые id. с одной стороны id=1 и с другой
  * тоже должен быть 1, а если вдруг где-то в БД был пропущен id у одной из сущностей, то получится ошибка и попоболь
  * А при односторонней связи создание возможно только при CascadeType.ALL, но при этом при апдете создается каждый
